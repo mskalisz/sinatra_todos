@@ -32,3 +32,7 @@ post "/lists" do
   session[:lists] << {name: params[:list_name], todos: []}
   redirect "/lists"
 end
+
+# Get a single list based on list ID
+get "/lists/1" do 
+end

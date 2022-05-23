@@ -28,10 +28,8 @@ helpers do
   end
 
   def sort_lists(lists, &block)
-    incomplete_lists = {}
-    complete_lists = {}
-
     complete_lists, incomplete_lists = lists.partition { |list| list_complete?(list) }
+
     incomplete_lists.each { |list| yield list, lists.index(list) }
     complete_lists.each { |list| yield list, lists.index(list) }
   end
@@ -55,6 +53,21 @@ end
 
 before do
   session[:lists] ||= []
+end
+
+get "/" do
+  redirect "/lists"
+end
+
+# View all lists
+get "/lists" do
+  @lists = session[:lists]
+  erb :lists, layout: :layout
+end
+
+# Render new list form
+get "/lists/new" do
+  erb :new_list, layout: :layout
 end
 
 # Return an error message if name is invalid. Return nil otherwise
@@ -82,21 +95,6 @@ def load_list(index)
   redirect "/lists"
 end
 
-get "/" do
-  redirect "/lists"
-end
-
-# View all lists
-get "/lists" do
-  @lists = session[:lists]
-  erb :lists, layout: :layout
-end
-
-# Render new list form
-get "/lists/new" do
-  erb :new_list, layout: :layout
-end
-
 # Create a new list
 post "/lists" do
   list_name = params[:list_name].strip
@@ -121,7 +119,7 @@ end
 
 # Edit exitising to do list
 get "/lists/:id/edit" do
-  id = params[:id].to_i
+  @list_id = params[:id].to_i
   @list = load_list(@list_id)
   erb :edit_list, layout: :layout
 end
@@ -129,7 +127,7 @@ end
 # Update an exitising to do list
 post "/lists/:id" do
   list_name = params[:list_name].strip
-  id = params[:id].to_i
+  @list_id = params[:id].to_i
   @list = load_list(@list_id)
 
   error = error_for_list_name(list_name)
@@ -139,7 +137,7 @@ post "/lists/:id" do
   else
     @list[:name] = list_name
     session[:success] = "The list has been updated."
-    redirect "/lists/#{id}"
+    redirect "/lists/#{@list_id}"
   end
 end
 

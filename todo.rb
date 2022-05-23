@@ -33,7 +33,7 @@ post "/lists" do
   if !(1..100).cover?(list_name.size)
     session[:error] = "List name must be between 1 and 100 characters."
     erb :new_list, layout: :layout
-  elsif sesssion[:lists].any? {|list| list[:name] == list_name}
+  elsif session[:lists].any? {|list| list[:name] == list_name }
     session[:error] = "List name must be unique."
     erb :new_list, layout: :layout
   else 

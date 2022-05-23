@@ -57,21 +57,6 @@ before do
   session[:lists] ||= []
 end
 
-get "/" do
-  redirect "/lists"
-end
-
-# View all lists
-get "/lists" do
-  @lists = session[:lists]
-  erb :lists, layout: :layout
-end
-
-# Render new list form
-get "/lists/new" do
-  erb :new_list, layout: :layout
-end
-
 # Return an error message if name is invalid. Return nil otherwise
 def error_for_list_name(name)
   if !(1..100).cover?(name.size)
@@ -95,6 +80,21 @@ def load_list(index)
   
   session[:error] = "The specified list was not found."
   redirect "/lists"
+end
+
+get "/" do
+  redirect "/lists"
+end
+
+# View all lists
+get "/lists" do
+  @lists = session[:lists]
+  erb :lists, layout: :layout
+end
+
+# Render new list form
+get "/lists/new" do
+  erb :new_list, layout: :layout
 end
 
 # Create a new list

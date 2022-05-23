@@ -142,8 +142,8 @@ post "/lists/:list_id/todos/:id" do
 end
 
 # Mark all todos as complete for a list
-post "/lists/:id/complete_all" do
-  @list_id = params[:id].to_i
+post "/lists/:list_id/complete_all" do
+  @list_id = params[:list_id].to_i
   @list = session[:lists][@list_id]
 
   @list[:todos].each do |todo|

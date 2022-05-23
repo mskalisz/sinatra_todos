@@ -8,6 +8,16 @@ configure do
   set :session_secret, 'secret_word'
 end
 
+helpers do
+  def list_complete?(list)
+    list[:todos].size > 0 && list[:todos].all? { |todo| todo[:completed] }
+  end
+
+  def list_class(list)
+    "complete" if list_complete?(list)
+  end
+end
+
 before do
   session[:lists] ||= []
 end

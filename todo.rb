@@ -61,8 +61,8 @@ end
 
 # Get a single list based on list ID
 get "/lists/:id" do 
-  id = params[:id].to_i
-  @list = session[:lists][id]
+  @list_id = params[:id].to_i
+  @list = session[:lists][@list_id]
   erb :list, layout: :layout
 end
 
@@ -101,8 +101,8 @@ end
 
 # Add a new todo to a list
 post "/lists/:list_id/todos" do
-  list_id = params[:list_id].to_i
-  @list = session[:lists][list_id]
+  @list_id = params[:list_id].to_i
+  @list = session[:lists][@list_id]
   text = params[:todo].strip
 
   error = error_for_todo(text)
@@ -112,6 +112,6 @@ post "/lists/:list_id/todos" do
   else
     @list[:todos] << {name: text, completed: false}
     session[:success] = "The todo was added."
-    redirect "/lists/#{list_id}"
+    redirect "/lists/#{@list_id}"
   end
 end

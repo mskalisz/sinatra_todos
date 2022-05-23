@@ -29,16 +29,9 @@ helpers do
     incomplete_lists = {}
     complete_lists = {}
 
-    lists.each_with_index do |list, index|
-      if list_complete?(list)
-        complete_lists[list] = index
-      else
-        incomplete_lists[list] = index
-      end
-    end
-
-  incomplete_lists.each(&block)
-  complete_lists.each(&block)
+    complete_lists, incomplete_lists = lists.partition { |list| list_complete?(list) }
+    incomplete_lists.each { |list| yield list, lists.index(list) }
+    complete_lists.each { |list| yield list, lists.index(list) }
   end
 
   def sort_todos(todos, &block)

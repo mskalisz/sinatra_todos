@@ -24,6 +24,22 @@ helpers do
   def todos_remaining_count(list)
     list[:todos].select { |todo| !todo[:completed] }.size
   end
+
+  def sort_lists(lists, &block)
+    incomplete_lists = {}
+    complete_lists = {}
+
+    lists.each_with_index do |list, index|
+      if list_complete?(list)
+        complete_lists[list] = index
+      else
+        incomplete_lists[list] = index
+      end
+    end
+
+  incomplete_lists.each(&block)
+  complete_lists.each(&block)
+  end
 end
 
 before do
@@ -37,7 +53,6 @@ end
 # View all lists
 get "/lists" do
   @lists = session[:lists]
-
   erb :lists, layout: :layout
 end
 

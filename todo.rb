@@ -52,6 +52,9 @@ post "/lists" do
 end
 
 # Get a single list based on list ID
-get "/lists/1" do 
+get "/lists/:id" do 
+  id = params[:id].to_i
+  @list = session[:lists][id]
+  erb :list, layout: :layout
 end
 

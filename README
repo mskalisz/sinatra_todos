@@ -1,1 +1,7 @@
 Sinatra app for Todo webapp
+
+To run the app on a web browser use:
+  ```ruby todo.rb```
+In your terminal to start the app with Sinatra.
+
+This app is also deployed on Heroku.
